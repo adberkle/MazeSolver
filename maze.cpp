@@ -42,10 +42,12 @@ void Maze::set(unsigned int i, unsigned int j, bool isWall){
 	
 }
 
-/*Requires: 0 <= i <= width, 0 <= j <= height
- *Effects:returns whether the specified coordinates are a wall
+/*Requires:nothing
+ *Effects:returns whether the specified coordinates are a wall.
+ *		Note:all coordinates outside the given height and widths are walls
  *Modifies:Nothing*/
 bool Maze::isWall(unsigned int i, unsigned int j){
+	if(i + 1 >= width || j + 1 >= height) return true;
 	return ((static_cast<char>(*(squares+(j*width+i)/8)) >> (j*width+i)%8) & 1);
 }
 
@@ -103,7 +105,7 @@ RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 				neighbors++;
 			} 
 		}
-		if(wall->second + 1 < width){
+		if(wall->second + 1 < height){
 			if(!isWall(wall->first, wall->second + 1)){
 				neighbors++;
 			} 

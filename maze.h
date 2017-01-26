@@ -9,9 +9,10 @@ class Maze
 	/*see set::Maze(unsigned int i; unsigned int j, bool isWall) definition 
 	for description on how maze is arranged*/
 protected:
+	
+public:
 	unsigned int height;
 	unsigned int width;
-public:
   	/*Requires:nothing
  	 *Effects:constructs a default maze with all squares as isWalls
  	 *Modifies:allocates maze to heap*/
