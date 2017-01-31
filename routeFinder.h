@@ -6,8 +6,10 @@
 class RouteFinder {
 protected:
 	Maze* maze;
+	std::string route;
 public:
 	RouteFinder(Maze* mazeIn);
+	virtual ~RouteFinder(){};
 
 	/*Requires:N/A
  	 *Effects:runs navigation on maze
@@ -17,7 +19,7 @@ public:
 	/*Requires:N/A
  	 *Effects:visually displays route taken to get to goal
  	 *Modifies:N/A*/
-	virtual void display() =0;
+	void display();
 };
 
 
@@ -25,10 +27,24 @@ class RandomRoute : public RouteFinder {
 	unsigned int i;
 	unsigned int j;
 	int seed;
-	std::string route;
 public:
 	RandomRoute(Maze* mazeIn, int seedIn);
-	void display();
+	~RandomRoute();
+
+	void navigate();
+};
+
+class DepthFirst : public RouteFinder {
+	struct Node{
+		unsigned int parent;
+		unsigned int i;
+		unsigned int j;
+		Node(unsigned int x, unsigned int y, unsigned int parentIndex);
+	};
+	
+public:
+	DepthFirst(Maze* mazeIn);
+	~DepthFirst();
 	void navigate();
 };
 

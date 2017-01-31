@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall
+CFLAGS = -Wall
 
 HDRS = maze.h routefinder.h
 SRCS = main.cpp maze.cpp routeFinder.cpp
@@ -10,13 +10,13 @@ all:
 
 run:
 	rm -f -r $(OBJS)
-	$(CC) $(CFLAGS) $(SRCS) -o maze.o
-	./maze.o
+	$(CC) -g $(CFLAGS) $(SRCS) -o maze.o
+	./maze.o -h 5 -w 5 -s 500 -a 1
 
 gdb:
 	rm -f -r $(OBJS)
 	$(CC) -g $(CFLAGS) $(SRCS) -o maze.o
-	sudo gdb maze.o
+	sudo lldb maze.o
 
 .PHONY: clean
 clean: 

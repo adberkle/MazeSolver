@@ -2,6 +2,7 @@
 #include "iostream"
 #include <string.h> //memset()
 #include <vector>
+#include <cassert>
 #include <random>
 #include <utility>
 
@@ -47,7 +48,6 @@ void Maze::set(unsigned int i, unsigned int j, bool isWall){
  *		Note:all coordinates outside the given height and widths are walls
  *Modifies:Nothing*/
 bool Maze::isWall(unsigned int i, unsigned int j){
-	if(i + 1 >= width || j + 1 >= height) return true;
 	return ((static_cast<char>(*(squares+(j*width+i)/8)) >> (j*width+i)%8) & 1);
 }
 
@@ -78,12 +78,11 @@ char* Maze::get() {
 	return squares;
 }
 
-
 RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 :Maze(h,w, true)
 {
-	std::mt19937_64 ranNum(seed);
 	set(0,0,false);
+	std::mt19937_64 ranNum(seed);
 	std::vector<std::pair<unsigned int, unsigned int> > walls;
 	walls.push_back(std::make_pair(0u,1u));
 	walls.push_back(std::make_pair(1u,0u));
@@ -92,7 +91,8 @@ RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 	std::pair<unsigned int, unsigned int>* wall;
 	while(!walls.empty()){
 		index = ranNum() % walls.size();//pick random wall in list
-		wall = &(walls[index]);
+		assert(index < walls.size());
+		wall = &walls[index];
 		neighbors = 0;
 		//if it only has one adjacent path, make it a path and add all adjacent walls
 		if(wall->first + 1 < width){
@@ -127,7 +127,7 @@ RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 					walls.push_back(std::make_pair(wall->first - 1u, wall->second));
 				} 
 			}
-			if(wall->second + 1 < width){
+			if(wall->second + 1 < height){
 				if(isWall(wall->first, wall->second + 1)){
 					walls.push_back(std::make_pair(wall->first, wall->second + 1u));
 				} 
@@ -140,6 +140,9 @@ RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 		}
 		swap(walls[index], walls[walls.size()-1]);
 		walls.pop_back();//remove wall
+	}
+	if(isWall(width-1,height-1)){
+		set(width-1, height-1, false);
 	}
 }
 
