@@ -1,5 +1,6 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -std=c++11
+PFLAGS = -lprofiler -fno-omit-frame-pointer --enable-frame-pointers -Wl,--eh-frame-hdr
 
 HDRS = maze.h routefinder.h
 SRCS = main.cpp maze.cpp routeFinder.cpp
@@ -16,7 +17,10 @@ run:
 gdb:
 	rm -f -r $(OBJS)
 	$(CC) -g $(CFLAGS) $(SRCS) -o maze.o
-	sudo lldb maze.o
+	sudo gdb maze.o
+
+time:
+	$(CC) -lprofiler $(CFLAGS) $(SRCS) -o maze.o
 
 .PHONY: clean
 clean: 

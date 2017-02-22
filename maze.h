@@ -36,7 +36,7 @@ public:
 	/*Requires:nothing
  	 *Effects: prints an image of the maze to std::cout
  	 *Modifies:Nothing*/
-	void show();
+	void display();
 
 	/*Requires:nothing
  	 *Effects:returns a pointer to the start of the maze

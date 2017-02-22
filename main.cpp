@@ -5,11 +5,9 @@
 #include <cstdlib>			//atoi
 #include <iostream>
 
-
 /*Requires:
  *Effects:
  *Modifies:*/
-
 int main(int argc, char *argv[]) {
 	//default parameters
 	unsigned int height = 5;
@@ -50,23 +48,26 @@ int main(int argc, char *argv[]) {
 
 	//make maze based on command line arguments
 	RPrims maze(height, width, seed);
-	maze.show();
+	//maze.display();
+
 	//make routefinder data structure based on command line arguments
 	RouteFinder* routeFinder;
 	switch(algorithm){
 		case 0:
-			routeFinder = new RandomRoute(&maze, seed);
+			routeFinder = new RouteFinder();
 		case 1:
 			routeFinder = new DepthFirst(&maze);
+		case 3:
+			routeFinder = new RandomRoute(&maze, seed);
 		default:
 			routeFinder = new DepthFirst(&maze);
 	}
 
-	std::cout << height << ", " << width << ", " << seed << ", " << algorithm << std::endl;
 	//run route finding
 	routeFinder->navigate();
-	routeFinder->display();
+	//routeFinder->display();
+	std::cout << routeFinder->verify() << std::endl;
 
-	//delete routeFinder;
+	delete routeFinder;
 	return 0;
 }

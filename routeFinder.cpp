@@ -14,6 +14,40 @@ void RouteFinder::display(){
 	 std::cout << route << std::endl;
 }
 
+/*Requires:navigate() must have been run first
+ *Effects:verifies the route used leads to the exit
+ *Modifies:N/A*/
+bool RouteFinder::verify(){
+	unsigned int i = 0;
+	unsigned int j = 0;
+	for(unsigned int idx = 0; idx < route.length(); idx++){
+	 	switch(route[idx]){
+	 		case '<':
+	 			i--;
+	 			if(maze->isWall(i,j))
+	 				return false;
+	 			break;
+	 		case '>':
+	 			i++;
+	 			if(maze->isWall(i,j))
+	 				return false;
+	 			break;
+	 		case '^':
+	 			j--;
+	 			if(maze->isWall(i,j))
+	 				return false;
+	 			break;
+	 		case 'v':
+	 			j++;
+	 			if(maze->isWall(i,j))
+	 				return false;
+	 			break;
+	 	}
+	}
+	if(i+1 == maze->width && j+1 == maze->height)
+	 	return true;
+	return false;
+}
 RandomRoute::RandomRoute(Maze* mazeIn, int seedIn):RouteFinder(mazeIn),i(0u),
 	j(0u),seed(seedIn){}
 

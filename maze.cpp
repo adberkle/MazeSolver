@@ -45,16 +45,17 @@ void Maze::set(unsigned int i, unsigned int j, bool isWall){
 
 /*Requires:nothing
  *Effects:returns whether the specified coordinates are a wall.
- *		Note:all coordinates outside the given height and widths are walls
+ *Note:all coordinates outside the given height and widths are walls
  *Modifies:Nothing*/
 bool Maze::isWall(unsigned int i, unsigned int j){
+	if(i >= width || j >= height) return true;
 	return ((static_cast<char>(*(squares+(j*width+i)/8)) >> (j*width+i)%8) & 1);
 }
 
 /*Requires:nothing
  *Effects: prints an image of the maze to std::cout
  *Modifies:Nothing*/
-void Maze::show(){
+void Maze::display(){
 /*it might be more efficient to display whole blocks of the maze at once, but 
 I prefer to view the maze this way because I can change the orientation with
 respects to (i,j) and only need to make changes in isWall and set*/
@@ -88,53 +89,51 @@ RPrims::RPrims(unsigned int h, unsigned int w, int seed)
 	walls.push_back(std::make_pair(1u,0u));
 	unsigned long index = 0;
 	char neighbors = 0;
-	std::pair<unsigned int, unsigned int>* wall;
 	while(!walls.empty()){
 		index = ranNum() % walls.size();//pick random wall in list
 		assert(index < walls.size());
-		wall = &walls[index];
 		neighbors = 0;
 		//if it only has one adjacent path, make it a path and add all adjacent walls
-		if(wall->first + 1 < width){
-			if(!isWall(wall->first + 1, wall->second)){
+		if(walls[index].first + 1 < width){
+			if(!isWall(walls[index].first + 1, walls[index].second)){
 				neighbors++;
 			} 
 		}
-		if(wall->first != 0){
-			if(!isWall(wall->first - 1, wall->second)){
+		if(walls[index].first != 0){
+			if(!isWall(walls[index].first - 1, walls[index].second)){
 				neighbors++;
 			} 
 		}
-		if(wall->second + 1 < height){
-			if(!isWall(wall->first, wall->second + 1)){
+		if(walls[index].second + 1 < height){
+			if(!isWall(walls[index].first, walls[index].second + 1)){
 				neighbors++;
 			} 
 		}
-		if(wall->second != 0){
-			if(!isWall(wall->first, wall->second - 1)){
+		if(walls[index].second != 0){
+			if(!isWall(walls[index].first, walls[index].second - 1)){
 				neighbors++;
 			} 
 		}
 		if(neighbors < 2){
-			set(wall->first, wall->second, false);
-			if(wall->first + 1 < width){
-				if(isWall(wall->first + 1, wall->second)){
-					walls.push_back(std::make_pair(wall->first + 1u, wall->second));
+			set(walls[index].first, walls[index].second, false);
+			if(walls[index].first + 1 < width){
+				if(isWall(walls[index].first + 1, walls[index].second)){
+					walls.push_back(std::make_pair(walls[index].first + 1u, walls[index].second));
 				} 
 			}
-			if(wall->first != 0){
-				if(isWall(wall->first - 1, wall->second)){
-					walls.push_back(std::make_pair(wall->first - 1u, wall->second));
+			if(walls[index].first != 0){
+				if(isWall(walls[index].first - 1, walls[index].second)){
+					walls.push_back(std::make_pair(walls[index].first - 1u, walls[index].second));
 				} 
 			}
-			if(wall->second + 1 < height){
-				if(isWall(wall->first, wall->second + 1)){
-					walls.push_back(std::make_pair(wall->first, wall->second + 1u));
+			if(walls[index].second + 1 < height){
+				if(isWall(walls[index].first, walls[index].second + 1)){
+					walls.push_back(std::make_pair(walls[index].first, walls[index].second + 1u));
 				} 
 			}
-			if(wall->second != 0){
-				if(isWall(wall->first, wall->second - 1)){
-					walls.push_back(std::make_pair(wall->first, wall->second - 1u));
+			if(walls[index].second != 0){
+				if(isWall(walls[index].first, walls[index].second - 1)){
+					walls.push_back(std::make_pair(walls[index].first, walls[index].second - 1u));
 				} 
 			}
 		}

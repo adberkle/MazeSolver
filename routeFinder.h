@@ -13,13 +13,18 @@ public:
 
 	/*Requires:N/A
  	 *Effects:runs navigation on maze
- 	 *Modifies:N/A*/
+ 	 *Modifies:route string*/
 	virtual void navigate() =0;
 
 	/*Requires:N/A
  	 *Effects:visually displays route taken to get to goal
  	 *Modifies:N/A*/
 	void display();
+
+	/*Requires:navigate() must have been run first
+ 	 *Effects:verifies the route used leads to the exit
+ 	 *Modifies:N/A*/
+	bool verify();
 };
 
 
